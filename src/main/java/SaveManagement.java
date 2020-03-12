@@ -8,13 +8,15 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/** Класс, оперирующий с файлами*/
+
 public class SaveManagement {
     private static File file;
 
     public static void setFile(File file) {
         SaveManagement.file = file;
     }
-
+     /** Сохранение файла в CSV формат*/
     public static void SaveToFile(Collect c)
     {
         if (file == null)
@@ -30,6 +32,7 @@ public class SaveManagement {
         }
     }
 
+    /** Возвращает коллекцию из сохраненного файла*/
     public static Collect ListFromSave() {
         Collect collect = new Collect();
         try {

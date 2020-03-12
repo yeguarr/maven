@@ -20,7 +20,11 @@ public class Location {
     public Long getX() {
         return x;
     }
+
+    /** Проверка на тип Long */
     public static Checker<Long> XYZCheck = (Long L) -> {if (L!=null) return L; else throw new failedCheckException();};
+
+    /** Проверка на тип String */
     public static Checker<String> nameCheck = (String S) -> {if(S == null) return null; else if (S.length() <= 867) return S; throw new failedCheckException();};
 
     public Long getY() {

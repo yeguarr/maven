@@ -12,8 +12,7 @@ import java.util.LinkedList;
 
 public class Command {
     /** Обработка команд, вводимых с консоли */
-    public static boolean Switcher(AbstractReader reader, Collect c, String s1, String s2)
-    {
+    public static boolean Switcher(AbstractReader reader, Collect c, String s1, String s2) throws EndOfFile {
         switch (s1)
         {
             case ("help"): Help();
@@ -26,7 +25,7 @@ public class Command {
                 break;
             case ("update"): Update(reader, c, s2);
                 break;
-            case ("remove_by_id"): Remove_by_id(c, s2);
+            case ("remove_by_id"): Remove_by_id(reader, c, s2);
                 break;
             case("clear"): Clear(c);
                 break;
@@ -133,58 +132,45 @@ public class Command {
     }
 
     /** Удаляет все элементы коллекции, которые меньше чем заданный*/
-    public static void Remove_lower(AbstractReader reader,Collect c, String s) {
-        try {
-            int id = c.GetRandId();
-            Route New = toAdd(reader, id, s);
-            int size = c.List.size();
-            int i = 0;
-            while (i < size) {
-                if (c.List.get(i).compareTo(New) < 0) {
-                    c.List.remove(c.List.get(i));
-                    size -= 1;
-                    i -= 1;
-                }
-                i++;
+    public static void Remove_lower(AbstractReader reader,Collect c, String s) throws EndOfFile {
+        int id = c.GetRandId();
+        Route New = toAdd(reader, id, s);
+        int size = c.List.size();
+        int i = 0;
+        while (i < size) {
+            if (c.List.get(i).compareTo(New) < 0) {
+                c.List.remove(c.List.get(i));
+                size -= 1;
+                i -= 1;
             }
-        } catch (EndOfFile e)
-        {
-            System.out.println("Преждевременный конец файла!");
+            i++;
         }
     }
 
     /** Удаляет все элементы коллекции, которые больше чем заданный */
-    public static void Remove_greater(AbstractReader reader, Collect c, String s) {
-        try {
-            int id = c.GetRandId();
-            Route New = toAdd(reader, id, s);
-            int size = c.List.size();
-            int i = 0;
-            while (i < size) {
-                if (c.List.get(i).compareTo(New) > 0) {
-                    c.List.remove(c.List.get(i));
-                    size -= 1;
-                    i -= 1;
-                }
-                i++;
+    public static void Remove_greater(AbstractReader reader, Collect c, String s) throws EndOfFile {
+        int id = c.GetRandId();
+        Route New = toAdd(reader, id, s);
+        int size = c.List.size();
+        int i = 0;
+        while (i < size) {
+            if (c.List.get(i).compareTo(New) > 0) {
+                c.List.remove(c.List.get(i));
+                size -= 1;
+                i -= 1;
             }
-        } catch (EndOfFile e) {
-            System.out.println("Преждевременный конец файла!");
+            i++;
         }
     }
 
     /** Добавляет новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции */
-    public static void Add_if_min(AbstractReader reader, Collect c, String s) {
-        try {
-            int id = c.GetRandId();
-            Route New = toAdd(reader, id, s);
-            if (New.compareTo(c.List.getFirst()) < 0) {
-                c.List.add(New);
-            } else System.out.println("Элемент не является минимальным в списке");
-            Collections.sort(c.List);
-        } catch (EndOfFile e) {
-            System.out.println("Преждевременный конец файла!");
-        }
+    public static void Add_if_min(AbstractReader reader, Collect c, String s) throws EndOfFile {
+        int id = c.GetRandId();
+        Route New = toAdd(reader, id, s);
+        if (New.compareTo(c.List.getFirst()) < 0) {
+            c.List.add(New);
+        } else System.out.println("Элемент не является минимальным в списке");
+        Collections.sort(c.List);
     }
 
     /** Считывает и исполняет скрипт из указанного файла.
@@ -207,6 +193,9 @@ public class Command {
                 //RecursionHandler.resetCounter();
         } catch (IncorrectFileNameException e) {
             System.out.println("Неверное имя файла");
+        } catch (EndOfFile e)
+        {
+            System.out.println("Преждевременный конец файла");
         }
         return programIsWorking;
     }
@@ -222,42 +211,38 @@ public class Command {
     }
 
     /** Удаляет все элементы по его id */
-    public static void Remove_by_id(Collect c, String s) {
+    public static void Remove_by_id(AbstractReader reader, Collect c, String s) {
+        int id;
         try {
-            Integer id = Integer.parseInt(s);
-            Route r = c.searchById(id);
-            if (r == null)
-            {
-                System.out.println("Такого элемента нет");
-                return;
-            }
-            c.List.remove(r);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+            id = Route.idCheck.checker(Integer.parseInt(s));
+        } catch (NumberFormatException | failedCheckException e) {
+            id = reader.HandlerI("Введите int id: ", Route.idCheck);
         }
+        Route r = c.searchById(id);
+        if (r == null)
+        {
+            System.out.println("Такого элемента нет");
+            return;
+        }
+        c.List.remove(r);
     }
 
     /** Перезаписывает элемент списка с указанным id */
-    public static void Update(AbstractReader reader, Collect c, String s) {
+    public static void Update(AbstractReader reader, Collect c, String s) throws EndOfFile {
+
+        int id;
         try {
-            int id;
-            try {
-                id = Route.idCheck.checker(Integer.parseInt(s));
-            } catch (NumberFormatException | failedCheckException e) {
-                id = reader.HandlerI("Введите int id: ", Route.idCheck);
-            }
-            Route r = c.searchById(id);
-            if (r == null) {
-                System.out.println("Такого элемента нет");
-                return;
-            }
-            System.out.print("     Введите String name: ");
-            String name = reader.read();
-            c.List.set(c.List.indexOf(r), toAdd(reader, id, name));
-        }catch (EndOfFile e)
-        {
-            System.out.println("Преждевременный конец файла!");
+            id = Route.idCheck.checker(Integer.parseInt(s));
+        } catch (NumberFormatException | failedCheckException e) {
+            id = reader.HandlerI("Введите int id: ", Route.idCheck);
         }
+        Route r = c.searchById(id);
+        if (r == null) {
+            System.out.println("Такого элемента нет");
+            return;
+        }
+        String name = reader.HandlerS("Введите name String: ", Route.nameCheck);
+        c.List.set(c.List.indexOf(r), toAdd(reader, id, name));
     }
 
     /** Выводит все элементы списка*/
@@ -270,17 +255,12 @@ public class Command {
     }
 
     /** Добавляет элемент в список*/
-    public static void Add(AbstractReader reader, Collect c, String s)
-    {
-        try {
-            int id = c.GetRandId();
-            c.List.add(toAdd(reader, id, s));
-            Collections.sort(c.List);
-        } catch (EndOfFile e)
-        {
-            System.out.println("Преждевременный конец файла!");
-        }
+    public static void Add(AbstractReader reader, Collect c, String s) throws EndOfFile {
+        int id = c.GetRandId();
+        c.List.add(toAdd(reader, id, s));
+        Collections.sort(c.List);
     }
+
     public static Route toAdd(AbstractReader reader, int id, String s) throws EndOfFile {
 
         Route route = new Route();

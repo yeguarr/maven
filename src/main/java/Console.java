@@ -1,7 +1,9 @@
+import Exceptions.EndOfFile;
+
 import java.util.Scanner;
 
 /**
- * Класс, считывающий строки из файла
+ * Класс, считывающий строки из консоли
 */
 public class Console extends AbstractReader{
     public static Console Console = new Console();
@@ -9,7 +11,9 @@ public class Console extends AbstractReader{
         scan = new Scanner(System.in);
     }
     @Override
-    public String read() {
-        return scan.nextLine();
+    public String read() throws EndOfFile {
+        if (scan.hasNextLine())
+            return scan.nextLine();
+        throw new EndOfFile("Конец ввода косоли!");
     }
 }

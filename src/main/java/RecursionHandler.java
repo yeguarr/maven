@@ -2,6 +2,7 @@ import Exceptions.failedCheckException;
 
 import java.util.LinkedList;
 
+/** Класс, предотвращающий рекурсии */
 public class RecursionHandler {
     private static LinkedList<String> Files = new LinkedList<>();
     private static String second;

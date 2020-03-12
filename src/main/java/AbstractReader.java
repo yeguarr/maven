@@ -11,7 +11,7 @@ import java.util.Scanner;
 public abstract class AbstractReader {
     /** protected конструктор*/
     protected AbstractReader() {}
-    public abstract String read();
+    public abstract String read() throws EndOfFile;
     /** Поле типа Scanner, предназначенное для считывания строки либо из файла, либо из консоли */
     protected Scanner scan;
 

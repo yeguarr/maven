@@ -2,6 +2,8 @@ import Exceptions.failedCheckException;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+/** Класс, который хранится в коллекции */
+
 public class Route implements Comparable<Route>{
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -29,6 +31,8 @@ public class Route implements Comparable<Route>{
                 '}';
 
     }
+
+    /** Конвертирование элемента списка в удобный для сохранения формат */
     public String toCSVfile()
     {
         String CSV = id + "," + name + "," + coordinates.getX() + "," + coordinates.getY() + "," + creationDate + ",";
@@ -37,7 +41,10 @@ public class Route implements Comparable<Route>{
         else
             CSV += "null,,,,";
         CSV += to.getX()  + "," + to.getY() + "," + to.getZ() + "," + to.getName()  + ",";
-        CSV += Objects.requireNonNullElse(distance, "null");
+        if (distance!=null)
+            CSV+=distance;
+        else
+            CSV+="null";
         return CSV;
     }
 
@@ -80,10 +87,15 @@ public class Route implements Comparable<Route>{
     public void setDistance(Long distance) {
         this.distance = distance;
     }
+
+    /** Проверка на тип Long */
     public static Checker<Long> distanceCheck = (Long L) -> {if(L == null) return null; else if (L>1) return L; throw new failedCheckException();};
+    /** Проверка на тип Integer */
     public static Checker<Integer> idCheck = (Integer I) -> {if (I!=null&&I>0) return I; else throw new failedCheckException();};
+    /** Проверка на тип String */
     public static Checker<String> nameCheck = (String S) -> {if (S!=null&&S.length()!=0) return S; else throw new failedCheckException();};
-    //сравнение объектов идет в первую очередь по имени, потом по дистанции
+
+    /**Сравнение объектов. Сравнение объектов идет в первую очередь по имени, потом по дистанции*/
     @Override
     public int compareTo(Route route) {
         int result = getName().compareTo(route.getName());

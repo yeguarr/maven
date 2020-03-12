@@ -12,7 +12,10 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+    /** Проверка на тип Integer */
     public static Checker<Integer> XCheck = (Integer I) -> {if (I!=null) return I; else throw new failedCheckException();};
+
+    /** Проверка на тип Long */
     public static Checker<Long> YCheck = (Long L) -> {if (L!=null&&L>-765) return L; else throw new failedCheckException();};
 
     public int getX() {
