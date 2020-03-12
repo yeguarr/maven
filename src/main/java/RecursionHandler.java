@@ -53,5 +53,5 @@ public class RecursionHandler {
     {
         counter = -1;
     }
-    public static Checker<Integer> Check = (Integer I) -> {if (I!=null) return I; else throw new failedCheckException();};
+    public static Checker<Integer> Check = (Integer I) -> {if (I!=null&&I<=10) return I; else throw new failedCheckException();};
 }

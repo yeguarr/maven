@@ -2,6 +2,7 @@ import Exceptions.EndOfFile;
 import Exceptions.IncorrectFileNameException;
 import Exceptions.failedCheckException;
 
+import java.io.FileNotFoundException;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -193,9 +194,10 @@ public class Command {
                 //RecursionHandler.resetCounter();
         } catch (IncorrectFileNameException e) {
             System.out.println("Неверное имя файла");
-        } catch (EndOfFile e)
-        {
-            System.out.println("Преждевременный конец файла");
+        } catch (EndOfFile e) {
+            System.out.println("Конец файла " + s);
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден");
         }
         return programIsWorking;
     }
@@ -290,7 +292,7 @@ public class Command {
         route.setTo(new Location(x,y,z,name));
 
         System.out.println("Введите Boolean isFromNull");
-        if (reader.HandlerB("     Введите Bool: ", boolCheck)) {
+        if (!reader.HandlerB("     Введите Bool: ", boolCheck)) {
             System.out.println("Ввoд полей Location from");
             x = reader.HandlerL("     Введите Long x: ", Location.XYZCheck);
             y = reader.HandlerL("     Введите long y: ", Location.XYZCheck);

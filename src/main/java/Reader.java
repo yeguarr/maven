@@ -7,17 +7,12 @@ import java.util.Scanner;
 
 /** класс для считывания команд с файла*/
 public class Reader extends AbstractReader{
-    public Reader(String file) throws IncorrectFileNameException {
-        try {
-            File f = new File(file);
-            if(!f.exists())
-                throw new IncorrectFileNameException("Ошибка! Файл не найден!");
-            scan = new Scanner(new File(file));
+    public Reader(String file) throws IncorrectFileNameException, FileNotFoundException{
 
-        } catch (FileNotFoundException e) {
-            //e.printStackTrace();
-            System.out.println("Критическая ошибка! Файл не найден!");
-        }
+        File f = new File(file);
+        if(!f.exists())
+            throw new IncorrectFileNameException("Ошибка! Файл не найден!");
+        scan = new Scanner(new File(file));
     }
     /** считывание строки */
     public String read() throws EndOfFile {

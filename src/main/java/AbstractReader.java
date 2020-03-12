@@ -110,9 +110,9 @@ public abstract class AbstractReader {
 
     public static Boolean parseBoolean(String s)
     {
-        if (s.equalsIgnoreCase("true"))
+        if (s.equalsIgnoreCase("true")||s.equalsIgnoreCase("t")||s.equals("1")||s.equalsIgnoreCase("y"))
             return true;
-        else if (s.equalsIgnoreCase("false"))
+        else if (s.equalsIgnoreCase("false")||s.equalsIgnoreCase("f")||s.equals("0")||s.equalsIgnoreCase("n"))
             return false;
         throw new NumberFormatException();
     }

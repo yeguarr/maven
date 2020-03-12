@@ -28,7 +28,7 @@ public class SaveManagement {
             }
             fileWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Ошибка доступа к файлу");
         }
     }
 
@@ -81,11 +81,10 @@ public class SaveManagement {
                     collect.List.add(route);
                 }  catch (ArrayIndexOutOfBoundsException | DateTimeParseException | NumberFormatException | failedCheckException e) {
                     System.out.println("Ошибка чтения файла, строка: " + lineNum);
-                    //e.printStackTrace();
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Ошибка доступа к файлу");
         }
         return collect;
     }

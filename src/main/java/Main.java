@@ -1,10 +1,19 @@
 import Exceptions.EndOfFile;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 public class Main {
     public static void main(String[] args) {
-        //final long start = System.nanoTime();
-        //Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.format("\nProgram execution took %f seconds\n", (System.nanoTime() - start) / 1e9f)));
-
+        final long start = System.nanoTime();
+        Signal.handle(new Signal("INT"), new SignalHandler() {
+            public void handle(Signal sig) {
+                System.out.println("Программа завершает работу");
+                //if (Console.Console.HandlerB("Введите Bool: ", Command.boolCheck)) {
+                    System.out.format("\nПрограмм работала %f сек.\n", (System.nanoTime() - start) / 1e9f);//ctrl-c
+                    System.exit(0);
+                //}
+            }
+        });
 
         Collect collect = Collect.StartFromSave(args);
 
@@ -18,7 +27,7 @@ public class Main {
             }
         } catch (EndOfFile e)
         {
-            System.out.println("Неожиданное завершение работы консоли");
+            System.out.println("Неожиданное завершение работы консоли");//ctrl-d
         }
     }
 }
