@@ -1,6 +1,5 @@
-import Exceptions.failedCheckException;
+import Exceptions.FailedCheckException;
 
-public interface Checker<T>
-{
-    T checker(T t) throws failedCheckException;
+public interface Checker<T> {
+    T checker(T t) throws FailedCheckException;
 }

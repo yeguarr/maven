@@ -1,4 +1,4 @@
-import Exceptions.failedCheckException;
+import Exceptions.FailedCheckException;
 
 /**
  * Класс - поле класса Route
@@ -21,11 +21,22 @@ public class Location {
         return x;
     }
 
-    /** Проверка на тип Long */
-    public static Checker<Long> XYZCheck = (Long L) -> {if (L!=null) return L; else throw new failedCheckException();};
+    /**
+     * Проверка на тип Long
+     */
+    public static Checker<Long> xyzCheck = (Long L) -> {
+        if (L != null) return L;
+        else throw new FailedCheckException();
+    };
 
-    /** Проверка на тип String */
-    public static Checker<String> nameCheck = (String S) -> {if(S == null) return null; else if (S.length() <= 867) return S; throw new failedCheckException();};
+    /**
+     * Проверка на тип String
+     */
+    public static Checker<String> nameCheck = (String s) -> {
+        if (s == null) return null;
+        else if (s.length() <= 867) return s;
+        throw new FailedCheckException();
+    };
 
     public Long getY() {
         return y;

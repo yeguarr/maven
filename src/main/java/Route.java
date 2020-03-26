@@ -1,10 +1,12 @@
-import Exceptions.failedCheckException;
+import Exceptions.FailedCheckException;
+
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
-/** Класс, который хранится в коллекции */
+/**
+ * Класс, который хранится в коллекции
+ */
 
-public class Route implements Comparable<Route>{
+public class Route implements Comparable<Route> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -13,8 +15,7 @@ public class Route implements Comparable<Route>{
     private Location to; //Поле не может быть null
     private Long distance; //Поле может быть null, Значение поля должно быть больше 1
 
-    java.time.ZonedDateTime getCreationDate()
-    {
+    java.time.ZonedDateTime getCreationDate() {
         return creationDate;
     }
 
@@ -29,22 +30,19 @@ public class Route implements Comparable<Route>{
                 ", to=" + to +
                 ", distance=" + distance +
                 '}';
-
     }
 
-    /** Конвертирование элемента списка в удобный для сохранения формат */
-    public String toCSVfile()
-    {
+    /**
+     * Конвертирование элемента списка в удобный для сохранения формат
+     */
+    public String toCSVfile() {
         String CSV = id + "," + name + "," + coordinates.getX() + "," + coordinates.getY() + "," + creationDate + ",";
         if (from != null)
-            CSV += from.getX()  + "," + from.getY() + "," + from.getZ() + "," + from.getName()  + ",";
+            CSV += from.getX() + "," + from.getY() + "," + from.getZ() + "," + from.getName() + ",";
         else
             CSV += "null,,,,";
-        CSV += to.getX()  + "," + to.getY() + "," + to.getZ() + "," + to.getName()  + ",";
-        if (distance!=null)
-            CSV+=distance;
-        else
-            CSV+="null";
+        CSV += to.getX() + "," + to.getY() + "," + to.getZ() + "," + to.getName() + ",";
+        CSV += distance != null ? distance : "null";
         return CSV;
     }
 
@@ -88,20 +86,38 @@ public class Route implements Comparable<Route>{
         this.distance = distance;
     }
 
-    /** Проверка на тип Long */
-    public static Checker<Long> distanceCheck = (Long L) -> {if(L == null) return null; else if (L>1) return L; throw new failedCheckException();};
-    /** Проверка на тип Integer */
-    public static Checker<Integer> idCheck = (Integer I) -> {if (I!=null&&I>0) return I; else throw new failedCheckException();};
-    /** Проверка на тип String */
-    public static Checker<String> nameCheck = (String S) -> {if (S!=null&&S.length()!=0) return S; else throw new failedCheckException();};
+    /**
+     * Проверка на тип Long
+     */
+    public static Checker<Long> distanceCheck = (Long L) -> {
+        if (L == null) return null;
+        else if (L > 1) return L;
+        throw new FailedCheckException();
+    };
+    /**
+     * Проверка на тип Integer
+     */
+    public static Checker<Integer> idCheck = (Integer I) -> {
+        if (I != null && I > 0) return I;
+        else throw new FailedCheckException();
+    };
+    /**
+     * Проверка на тип String
+     */
+    public static Checker<String> nameCheck = (String S) -> {
+        if (S != null && S.length() != 0) return S;
+        else throw new FailedCheckException();
+    };
 
-    /**Сравнение объектов. Сравнение объектов идет в первую очередь по имени, потом по дистанции*/
+    /**
+     * Сравнение объектов. Сравнение объектов идет в первую очередь по имени, потом по дистанции
+     */
     @Override
     public int compareTo(Route route) {
         int result = getName().compareTo(route.getName());
 
-        if (result == 0 && getDistance() != null && route.getDistance() != null){
-            result = getDistance().compareTo(route.getDistance());//возможна null exception
+        if (result == 0 && getDistance() != null && route.getDistance() != null) {
+            result = getDistance().compareTo(route.getDistance());
         }
         return result;
     }

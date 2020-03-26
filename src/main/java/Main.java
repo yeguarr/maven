@@ -1,4 +1,4 @@
-import Exceptions.EndOfFile;
+import Exceptions.EndOfFileException;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
@@ -9,25 +9,25 @@ public class Main {
             public void handle(Signal sig) {
                 System.out.println("Программа завершает работу");
                 //if (Console.Console.HandlerB("Введите Bool: ", Command.boolCheck)) {
-                    System.out.format("\nПрограмм работала %f сек.\n", (System.nanoTime() - start) / 1e9f);//ctrl-c
-                    System.exit(0);
+                System.out.format("\nПрограмм работала %f сек.\n", (System.nanoTime() - start) / 1e9f);//ctrl-c
+                System.exit(0);
                 //}
             }
         });
 
-        Collect collect = Collect.StartFromSave(args);
+        Collection collection = Collection.startFromSave(args);
 
         try {
             boolean programIsWorking = true;
             String[] com;
             while (programIsWorking) {
-                com = AbstractReader.Splitter(Console.Console.read());
-                programIsWorking = Command.Switcher(Console.Console, collect, com[0], com[1]);
-                RecursionHandler.resetIfChanged();
+                System.out.print("\u001B[33m" + "Ожидание ввода команды: " + "\u001B[0m");
+                com = AbstractReader.splitter(Console.console.read());
+                programIsWorking = Commander.switcher(Console.console, collection, com[0], com[1]);
+                //RecursionHandler.resetIfChanged();
             }
-        } catch (EndOfFile e)
-        {
-            System.out.println("Неожиданное завершение работы консоли");//ctrl-d
+        } catch (EndOfFileException e) {
+            System.out.println("\u001B[31m" + "Неожиданное завершение работы консоли" + "\u001B[0m");//ctrl-d
         }
     }
 }

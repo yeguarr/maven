@@ -1,7 +1,7 @@
 package Exceptions;
 
-public class failedCheckException extends Exception {
-    public failedCheckException() {
+public class FailedCheckException extends Exception {
+    public FailedCheckException() {
         super();
     }
 }
